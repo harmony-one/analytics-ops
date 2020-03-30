@@ -6,6 +6,10 @@ from .aws_util import (
     copy_from_s3
 )
 
+from .jupyter_util import (
+    protect
+)
+
 if sys.version_info.major < 3:
     warnings.simplefilter("always", DeprecationWarning)
     warnings.warn(

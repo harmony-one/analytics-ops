@@ -80,6 +80,13 @@ def notebook():
     """Control all things related to the jupyter notebook files on this machine"""
 
 
+@notebook.command('protect')
+@click.argument('path')
+def notebook_protect(path):
+    """Make the file or directory readonly"""
+    ops.protect(path)
+
+
 if __name__ == "__main__":
     setup()
     dir_check()

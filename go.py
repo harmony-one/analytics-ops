@@ -24,8 +24,7 @@ def setup():
 
 def dir_check():
     """Checks for correct assumptions made by CLI"""
-    # assert os.path.isdir("../jupyter"), "invalid path, check ops dir / working dir"
-    # assert os.path.isdir("../jupyter/logs"), "invalid path, check ops dir / working dir"
+    assert os.path.isdir("../jupyter"), "invalid path, check ops dir / working dir"
 
 
 def init():

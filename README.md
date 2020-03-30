@@ -15,7 +15,7 @@ All useful commands are executed from the python CLI: `./go.py`.
 
 1) To download the latest 2 batches of logs, execute the following command:
 ```
-./go.py download_logs stn --count 2
+./go.py log download stn --count 2
 ```
 > Note that this assumes that the analytics machine has the proper credentials for s3
  

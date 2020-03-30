@@ -3,7 +3,7 @@ import os
 import datetime
 
 env = os.environ.copy()
-timeout = 60
+timeout = 120
 
 
 def _list_aws_dir(directory):
@@ -40,7 +40,10 @@ def find_and_sort_all_logs(profile) -> list:
     return all_logs
 
 
-def copy_from_s3(src, dst):
+def copy_from_s3(src, dst) -> None:
+    """
+    Copy all files from the given s3 path `src` to the destination path `dst` on the machine.
+    """
     dst = os.path.abspath(dst)
     os.makedirs(dst, exist_ok=True)
     assert src.startswith('s3://'), f"given source {src} is not an s3 path"

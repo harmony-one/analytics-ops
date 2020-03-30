@@ -2,7 +2,7 @@
 This is the main repo for all ops handled by the analytics machine.
 
 ## Installation
-While in the root of this repo, run: 
+Clone this repo and while in the root of this repo, run: 
 ```
 pip3 install . && chmod +x ./go.py
 ```
@@ -19,3 +19,13 @@ All useful commands are executed from the python CLI: `./go.py`.
 ```
 > Note that this assumes that the analytics machine has the proper credentials for s3
  
+
+2) To protect a file or directory, execute the following command:
+```
+./go.py notebook protect ~/jupyter/Test.ipynb 
+```
+
+3) To share a file or directory, execute the following command:
+```
+./go.py notebook share ~/jupyter/Test.ipynb 
+```

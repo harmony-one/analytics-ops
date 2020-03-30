@@ -57,7 +57,7 @@ def log():
 
 
 @log.command('download')
-@click.option('--count', default=1, help='Number of logs to sync starting from latest')
+@click.option('--count', default=1, help='Number of logs to download, starting from latest')
 @click.argument('profile')
 def logs_download(profile, count):
     """Download latest logs for a specified profile."""
@@ -75,6 +75,13 @@ def logs_download(profile, count):
         ops.copy_from_s3(path, dst)
 
 
+@log.command('download-from-path')
+@click.argument('path')
+def logs_download_from_path(path):
+    pass
+
+
+
 @click.group()
 def notebook():
     """Control all things related to the jupyter notebook files on this machine"""
@@ -85,6 +92,7 @@ def notebook():
 def notebook_protect(path):
     """Make the file or directory readonly"""
     ops.protect(path)
+    print(f"Protected `{path}`")
 
 
 @notebook.command('share')
@@ -92,6 +100,8 @@ def notebook_protect(path):
 def notebook_share(path):
     """Make the file or directory writable"""
     ops.share(path)
+    print(f"Sharing `{path}`")
+
 
 
 if __name__ == "__main__":

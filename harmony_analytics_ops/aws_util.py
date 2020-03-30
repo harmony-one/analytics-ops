@@ -12,7 +12,13 @@ def _list_aws_dir(directory):
             subprocess.check_output(cmd, env=env, timeout=timeout).decode().split("\n") if n]
 
 
-def find_and_sort_all_logs(profile):
+def find_and_sort_all_logs(profile) -> list:
+    """
+    Finds all s3 paths for the given `profile`, sorted by most recent date first.
+
+    Note that there is an assumption of the format of the s3 path.
+    A valid example (with 'stn' as the profile) is: s3://harmony-benchmark/logs/stn/20/03/30/11:25:58/
+    """
     all_logs = []
     init_dir = f"s3://harmony-benchmark/logs/{profile}/"
     year_list = _list_aws_dir(init_dir)
@@ -32,3 +38,11 @@ def find_and_sort_all_logs(profile):
                 for time in time_list:
                     all_logs.append(f'{day_dir}{time}')
     return all_logs
+
+
+def copy_from_s3(src, dst):
+    dst = os.path.abspath(dst)
+    os.makedirs(dst, exist_ok=True)
+    assert src.startswith('s3://'), f"given source {src} is not an s3 path"
+    cmd = ['aws', 's3', 'cp', src, '--recursive']
+    subprocess.check_output(cmd, env=env, timeout=timeout).decode().split("\n")

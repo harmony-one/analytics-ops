@@ -14,4 +14,13 @@ def protect(path) -> str:
     return subprocess.check_output(cmd, env=env, timeout=timeout).decode()
 
 
+def share(path) -> str:
+    """
+    Make the given `path` readonly.
+    """
+    cmd = ['chmod', '+w', path]
+    return subprocess.check_output(cmd, env=env, timeout=timeout).decode()
+
+
+
 

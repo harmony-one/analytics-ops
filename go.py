@@ -87,6 +87,13 @@ def notebook_protect(path):
     ops.protect(path)
 
 
+@notebook.command('share')
+@click.argument('path')
+def notebook_share(path):
+    """Make the file or directory writable"""
+    ops.share(path)
+
+
 if __name__ == "__main__":
     setup()
     dir_check()

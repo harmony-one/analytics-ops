@@ -7,7 +7,8 @@ from .aws_util import (
 )
 
 from .jupyter_util import (
-    protect
+    protect,
+    share
 )
 
 if sys.version_info.major < 3:

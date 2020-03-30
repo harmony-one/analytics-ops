@@ -23,9 +23,10 @@ def cli():
 
 
 @cli.command()
-@cli.argument('profile', help="profile of logs to fetch")
-@cli.option('--count', default=1, help='the number of logs to sync starting from latest')
-def sync_log(profile, count):
+@click.option('--count', default=1, help='Number of logs to sync starting from latest')
+@click.argument('profile')
+def download_logs(profile, count):
+    """Download logs for a specified profile."""
     logs_dir = ops.find_and_sort_all_logs(profile)
     print(logs_dir)
 

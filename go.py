@@ -69,9 +69,9 @@ def logs_download(profile, count):
     if count > len(logs_dir):
         print(f"{Typgpy.FAIL}[Warning] specified count greater than available logs ({len(logs_dir)}).{Typgpy.ENDC}")
     for path in logs_dir[:count]:
-        assert path.startswith("s3://"), f"given source {path} is not an s3 path"
-        path_end = [el for el in path.split('/') if el][-1]
-        dst = f'../jupyter/logs/{path_end}'
+        assert path.startswith("s3://harmony-benchmark/logs"), f"given source {path} is not a known s3 path"
+        path_end = path.replace("s3://harmony-benchmark/logs", "")
+        dst = os.path.abspath(f'../jupyter/logs/{path_end}')
         print(f"Copying files from `{path}` to `{dst}`")
         ops.copy_from_s3(path, dst)
 

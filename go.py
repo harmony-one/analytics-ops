@@ -34,7 +34,7 @@ def init():
     
     Root Commands:      Description:
     
-    logs <Params>       Control all things related to logs on this machine
+    log <Params>       Control all things related to logs on this machine
     notebook <Params>   Control all things related to the jupyter notebook 
                         files on this machine
     """
@@ -42,7 +42,7 @@ def init():
     if len(sys.argv) >= 2:
         cmd = sys.argv.pop(1)
         try:
-            eval(f"{cmd}(prog_name='go.py ROOT_CMD')")
+            eval(f"{cmd}(prog_name='go.py {cmd}')")
         except Exception:  # Catch all to print help message under any error
             print(f"{cmd} is an unknown command")
             print(root_help_str)
@@ -57,10 +57,10 @@ def log():
     """Control all things related to logs on this machine"""
 
 
-@log.command()
+@log.command('download')
 @click.option('--count', default=1, help='Number of logs to sync starting from latest')
 @click.argument('profile')
-def download_logs(profile, count):
+def logs_download(profile, count):
     """Download latest logs for a specified profile."""
     logs_dir = ops.find_and_sort_all_logs(profile)
     if len(logs_dir) <= 0:
@@ -71,7 +71,9 @@ def download_logs(profile, count):
     for path in logs_dir[:count]:
         assert path.startwith("s3://"), f"given source {path} is not an s3 path"
         path_end = [el for el in path.split('/') if el][-1]
-        ops.copy_from_s3(path, f'../jupyter/logs/{path_end}')
+        dst = f'../jupyter/logs/{path_end}'
+        print(f"Copying files from `{path}` to `{dst}`")
+        ops.copy_from_s3(path, dst)
 
 
 @click.group()

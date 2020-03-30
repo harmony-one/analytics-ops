@@ -44,5 +44,5 @@ def copy_from_s3(src, dst):
     dst = os.path.abspath(dst)
     os.makedirs(dst, exist_ok=True)
     assert src.startswith('s3://'), f"given source {src} is not an s3 path"
-    cmd = ['aws', 's3', 'cp', src, '--recursive']
+    cmd = ['aws', 's3', 'cp', src, dst, '--recursive']
     subprocess.check_output(cmd, env=env, timeout=timeout).decode().split("\n")

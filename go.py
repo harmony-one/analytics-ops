@@ -43,7 +43,7 @@ def init():
         cmd = sys.argv.pop(1)
         try:
             eval(f"{cmd}(prog_name='go.py {cmd}')")
-        except Exception:  # Catch all to print help message under any error
+        except NameError:
             print(f"{cmd} is an unknown command")
             print(root_help_str)
             exit(-1)
@@ -69,7 +69,7 @@ def logs_download(profile, count):
     if count > len(logs_dir):
         print(f"{Typgpy.FAIL}[Warning] specified count greater than available logs ({len(logs_dir)}).{Typgpy.ENDC}")
     for path in logs_dir[:count]:
-        assert path.startwith("s3://"), f"given source {path} is not an s3 path"
+        assert path.startswith("s3://"), f"given source {path} is not an s3 path"
         path_end = [el for el in path.split('/') if el][-1]
         dst = f'../jupyter/logs/{path_end}'
         print(f"Copying files from `{path}` to `{dst}`")

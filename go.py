@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
+import os
 import click
 
 import pyhmy
 from pyhmy import cli as hmy
+from pyhmy import Typgpy
 
 import harmony_analytics_ops as ops
 
@@ -17,6 +19,11 @@ def setup():
     hmy.set_binary("./bin/hmy")
 
 
+def dir_check():
+    assert os.path.isdir("../jupyter"), "invalid path, check ops dir"
+    assert os.path.isdir("../jupyter/logs"), "invalid path, check ops dir"
+
+
 @click.group()
 def cli():
     pass
@@ -26,11 +33,16 @@ def cli():
 @click.option('--count', default=1, help='Number of logs to sync starting from latest')
 @click.argument('profile')
 def download_logs(profile, count):
-    """Download logs for a specified profile."""
+    """Download latest logs for a specified profile."""
     logs_dir = ops.find_and_sort_all_logs(profile)
-    print(logs_dir)
+    if len(logs_dir) <= 0:
+        print(f"{Typgpy.FAIL}No logs to download.")
+        exit(-1)
+    if count > len(logs_dir):
+        print(f"{Typgpy.FAIL}[Warning] specified count greater than available logs ({len(logs_dir)}).")
 
 
 if __name__ == "__main__":
     setup()
+    dir_check()
     cli()

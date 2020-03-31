@@ -4,7 +4,7 @@ This is the main repo for all ops handled by the analytics machine.
 ## Installation
 Clone this repo and while in the root of this repo, run: 
 ```
-pip3 install . && chmod +x ./go.py
+pip3 install . && chmod +x ./ops.py
 ```
 > Note that this assumes python3 and pip3 is installed
 

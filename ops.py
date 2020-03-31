@@ -43,7 +43,7 @@ def init():
     if len(sys.argv) >= 2:
         cmd = sys.argv.pop(1)
         try:
-            eval(f"{cmd}(prog_name='go.py {cmd}')")
+            eval(f"{cmd}(prog_name='ops.py {cmd}')")
         except NameError:
             print(f"{cmd} is an unknown command")
             print(root_help_str)

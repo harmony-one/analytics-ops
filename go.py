@@ -76,7 +76,7 @@ def logs_download(profile, count):
 
 
 @log.command('download-from-path')
-@click.option('--recursive/--no-recursive', default=False)
+@click.option('--recursive/--no-recursive', default=True)
 @click.option('--include', default=None, help='Files to include in copy', type=str)
 @click.option('--exclude', default=None, help='Files to NOT include in copy', type=str)
 @click.argument('path')
@@ -91,15 +91,15 @@ def logs_download_from_path(path, recursive, include, exclude):
 @click.group()
 def notebook():
     """Control all things related to the jupyter notebook files on this machine"""
+    if os.geteuid() != 0:
+        print(f"{Typgpy.FAIL}Not running as root, exiting...{Typgpy.ENDC}")
+        exit(-1)
 
 
 @notebook.command('protect-path')
 @click.argument('path')
 def notebook_protect_path(path):
     """Make the file or directory readonly"""
-    if os.geteuid() != 0:
-        print(f"{Typgpy.FAIL}Not running as root, exiting...{Typgpy.ENDC}")
-        exit(-1)
     ops.protect(path)
     print(f"Protected `{path}`")
 
@@ -112,19 +112,18 @@ def notebook_protect(name):
     protected_count = 0
     for subdir, dirs, files in os.walk(directory):
         for file in files:
-            if file.endswith(".ipynb"):
-                notebook_protect_path(os.path.join(subdir, file))
+            if file.endswith(".ipynb") and (name == file or file.replace(".ipynb", "") == name):
+                path = os.path.join(subdir, file)
+                ops.protect(path)
+                print(f"Protected `{path}`")
                 protected_count += 1
-    print(f"Protected {[protected_count]} files.")
+    print(f"Protected {protected_count} files.")
 
 
 @notebook.command('share-path')
 @click.argument('path')
 def notebook_share_path(path):
     """Make the file or directory writable"""
-    if os.geteuid() != 0:
-        print(f"{Typgpy.FAIL}Not running as root, exiting...{Typgpy.ENDC}")
-        exit(-1)
     ops.share(path)
     print(f"Sharing `{path}`")
 
@@ -137,12 +136,15 @@ def notebook_share(name):
     share_count = 0
     for subdir, dirs, files in os.walk(directory):
         for file in files:
-            if file.endswith(".ipynb"):
-                notebook_share_path(os.path.join(subdir, file))
+            if file.endswith(".ipynb") and (name == file or file.replace(".ipynb", "") == name):
+                path = os.path.join(subdir, file)
+                ops.share(path)
+                print(f"Sharing `{path}`")
                 share_count += 1
-    print(f"Shared {[share_count]} files.")
+    print(f"Shared {share_count} files.")
 
 # TODO: add option to share the notebook via the repo method
+
 
 if __name__ == "__main__":
     setup()

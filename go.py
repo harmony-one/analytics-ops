@@ -145,6 +145,22 @@ def notebook_share(name):
     print(f"Shared {share_count} files.")
 
 
+@notebook.command('publish')
+@click.argument('name')
+def notebook_publish(name):
+    """Publish all notebooks with the given name"""
+    directory = os.path.abspath("../jupyter")
+    publish_count = 0
+    for subdir, dirs, files in os.walk(directory):
+        for file in files:
+            if file.endswith(".ipynb") and (name == file or file.replace(".ipynb", "") == name):
+                path = os.path.join(subdir, file)
+                if input(f"Publish: `{path}`?") in {'Y', 'y', 'yes', 'Yes'}:
+                    # TODO: implement publish command in harmony_analytics_ops
+                    publish_count += 1
+    print(f"Published {publish_count} files.")
+
+
 if __name__ == "__main__":
     setup()
     dir_check()

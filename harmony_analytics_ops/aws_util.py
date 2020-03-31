@@ -40,12 +40,19 @@ def find_and_sort_all_logs(profile) -> list:
     return all_logs
 
 
-def copy_from_s3(src, dst) -> None:
+def copy_from_s3(src, dst, recursive=False, include=None, exclude=None,) -> None:
     """
     Copy all files from the given s3 path `src` to the destination path `dst` on the machine.
+    One can specify what files to `include` or `exclude` and do a `recursive` copy.
     """
     dst = os.path.abspath(dst)
     os.makedirs(dst, exist_ok=True)
     assert src.startswith('s3://'), f"given source {src} is not an s3 path"
-    cmd = ['aws', 's3', 'cp', src, dst, '--recursive']
+    cmd = ['aws', 's3', 'cp', src, dst]
+    if exclude is not None:
+        cmd.extend(['--exclude', exclude])
+    if include is not None:
+        cmd.extend(['--include', include])
+    if recursive:
+        cmd.append('--recursive')
     subprocess.check_output(cmd, env=env, timeout=timeout).decode().split("\n")

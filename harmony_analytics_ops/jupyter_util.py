@@ -21,3 +21,5 @@ def share(path) -> None:
     subprocess.call(cmd, env=env, timeout=timeout)
 
 
+# TODO: implement publish command.
+

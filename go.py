@@ -10,6 +10,7 @@ from pyhmy import Typgpy
 import harmony_analytics_ops as ops
 
 env = os.environ.copy()
+file_dir = os.path.dirname(os.path.realpath(__file__))
 
 
 def setup():
@@ -18,14 +19,14 @@ def setup():
     assert pyhmy.__version__.major == 20, "wrong pyhmy version"
     assert pyhmy.__version__.minor == 1, "wrong pyhmy version"
     assert pyhmy.__version__.micro >= 14, "wrong pyhmy version, update please"
-    env = hmy.download("./bin/hmy", replace=False)
+    env = hmy.download(f"{file_dir}/bin/hmy", replace=False)
     hmy.environment.update(env)
-    hmy.set_binary("./bin/hmy")
+    hmy.set_binary(f"{file_dir}/bin/hmy")
 
 
 def dir_check():
     """Checks for correct assumptions made by CLI"""
-    assert os.path.isdir("../jupyter"), "invalid path, check ops dir / working dir"
+    assert os.path.isdir(f"{file_dir}/../jupyter"), "notebook directory is unknown"
 
 
 def init():
@@ -35,8 +36,8 @@ def init():
     Root Commands:      Description:
     
     log <Params>       Control all things related to logs on this machine
-    notebook <Params>   Control all things related to the jupyter notebook 
-                        files on this machine
+    notebook <Params>  Control all things related to the jupyter notebook 
+                       files on this machine
     """
 
     if len(sys.argv) >= 2:
@@ -71,7 +72,7 @@ def logs_download(profile, count):
     for path in logs_dir[:count]:
         assert path.startswith("s3://harmony-benchmark/logs"), f"given source {path} is not a known s3 path"
         path_end = path.replace("s3://harmony-benchmark/logs", "")
-        dst = os.path.abspath(f'../jupyter/logs/{path_end}')
+        dst = os.path.abspath(f'{file_dir}/../jupyter/logs/{path_end}')
         print(f"Copying files from `{path}` to `{dst}`")
         ops.copy_from_s3(path, dst, recursive=True)
 
@@ -84,7 +85,7 @@ def logs_download(profile, count):
 def logs_download_from_path(path, recursive, include, exclude):
     assert path.startswith("s3://harmony-benchmark/logs"), f"given source {path} is not a known s3 path"
     path_end = path.replace("s3://harmony-benchmark/logs", "")
-    dst = os.path.abspath(f'../jupyter/logs/{path_end}')
+    dst = os.path.abspath(f'{file_dir}/../jupyter/logs/{path_end}')
     print(f"Copying files from `{path}` to `{dst}`")
     ops.copy_from_s3(path, dst, recursive=recursive, include=include, exclude=exclude)
 
@@ -109,7 +110,7 @@ def notebook_protect_path(path):
 @click.argument('name')
 def notebook_protect(name):
     """Protects all notebooks with the given name"""
-    directory = os.path.abspath("../jupyter")
+    directory = os.path.abspath(f"{file_dir}/../jupyter")
     protected_count = 0
     for subdir, dirs, files in os.walk(directory):
         for file in files:
@@ -133,7 +134,7 @@ def notebook_share_path(path):
 @click.argument('name')
 def notebook_share(name):
     """Share all notebooks with the given name"""
-    directory = os.path.abspath("../jupyter")
+    directory = os.path.abspath(f"{file_dir}/../jupyter")
     share_count = 0
     for subdir, dirs, files in os.walk(directory):
         for file in files:
@@ -149,7 +150,7 @@ def notebook_share(name):
 @click.argument('name')
 def notebook_publish(name):
     """Publish all notebooks with the given name"""
-    directory = os.path.abspath("../jupyter")
+    directory = os.path.abspath(f"{file_dir}/../jupyter")
     publish_count = 0
     for subdir, dirs, files in os.walk(directory):
         for file in files:

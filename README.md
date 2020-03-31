@@ -10,8 +10,6 @@ pip3 install . && chmod +x ./go.py
 
 ## Usage
 All useful commands are executed from the python CLI: `./go.py`.
-> Note that there is an assumption that the current working directory is the root of this repo.
-> Some checks are done to check for said assumption. 
 
 1) To download the latest 2 batches of logs, execute the following command:
 ```

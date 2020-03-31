@@ -157,7 +157,8 @@ def notebook_publish(name):
         for file in files:
             if file.endswith(".ipynb") and (name == file or file.replace(".ipynb", "") == name):
                 path = os.path.join(subdir, file)
-                if input(f"Publish: `{path}`?") in {'Y', 'y', 'yes', 'Yes'}:
+                if input(f"Publish: `{path}`?\n> ") in {'Y', 'y', 'yes', 'Yes'}:
+                    raise RuntimeError("Not yet implemented")
                     # TODO: implement publish command in harmony_analytics_ops
                     publish_count += 1
     print(f"Published {publish_count} files.")

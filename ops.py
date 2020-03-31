@@ -62,7 +62,7 @@ def log():
 @click.option('--count', default=1, help='Number of logs to download, starting from latest')
 @click.argument('profile')
 def logs_download(profile, count):
-    """Download latest logs for a specified profile."""
+    """Download latest logs for a specified profile"""
     logs_dir = ops.find_and_sort_all_logs(profile)
     if len(logs_dir) <= 0:
         print(f"{Typgpy.FAIL}No logs to download.{Typgpy.ENDC}")
@@ -83,6 +83,7 @@ def logs_download(profile, count):
 @click.option('--exclude', default=None, help='Files to NOT include in copy', type=str)
 @click.argument('path')
 def logs_download_from_path(path, recursive, include, exclude):
+    """Download logs from a specified path"""
     assert path.startswith("s3://harmony-benchmark/logs"), f"given source {path} is not a known s3 path"
     path_end = path.replace("s3://harmony-benchmark/logs", "")
     dst = os.path.abspath(f'{file_dir}/../jupyter/logs/{path_end}')

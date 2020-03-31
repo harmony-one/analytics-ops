@@ -21,6 +21,8 @@ def find_and_sort_all_logs(profile) -> list:
     """
     all_logs = []
     init_dir = f"s3://harmony-benchmark/logs/{profile}/"
+    if f"{profile}/" not in _list_aws_dir("s3://harmony-benchmark/logs/"):
+        raise RuntimeError(f"No logs saved for profile `{profile}`")
     year_list = _list_aws_dir(init_dir)
     year_list.sort(key=lambda e: int(e.replace('/', '')), reverse=True)
     for year in year_list:

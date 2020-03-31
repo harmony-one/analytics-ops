@@ -13,6 +13,7 @@ env = os.environ.copy()
 
 
 def setup():
+    # hmy cli currently not used, but piped for future use.
     assert hasattr(pyhmy, "__version__")
     assert pyhmy.__version__.major == 20, "wrong pyhmy version"
     assert pyhmy.__version__.minor == 1, "wrong pyhmy version"
@@ -101,7 +102,7 @@ def notebook():
 def notebook_protect_path(path):
     """Make the file or directory readonly"""
     ops.protect(path)
-    print(f"Protected `{path}`")
+    print(f"Protected `{path}` (immutable file)")
 
 
 @notebook.command('protect')
@@ -115,7 +116,7 @@ def notebook_protect(name):
             if file.endswith(".ipynb") and (name == file or file.replace(".ipynb", "") == name):
                 path = os.path.join(subdir, file)
                 ops.protect(path)
-                print(f"Protected `{path}`")
+                print(f"Protected `{path}` (immutable file)")
                 protected_count += 1
     print(f"Protected {protected_count} files.")
 
@@ -125,7 +126,7 @@ def notebook_protect(name):
 def notebook_share_path(path):
     """Make the file or directory writable"""
     ops.share(path)
-    print(f"Sharing `{path}`")
+    print(f"Sharing `{path}` (can edit file)")
 
 
 @notebook.command('share')
@@ -139,11 +140,9 @@ def notebook_share(name):
             if file.endswith(".ipynb") and (name == file or file.replace(".ipynb", "") == name):
                 path = os.path.join(subdir, file)
                 ops.share(path)
-                print(f"Sharing `{path}`")
+                print(f"Sharing `{path}` (can edit file)")
                 share_count += 1
     print(f"Shared {share_count} files.")
-
-# TODO: add option to share the notebook via the repo method
 
 
 if __name__ == "__main__":

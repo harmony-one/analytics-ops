@@ -1,26 +1,23 @@
 import subprocess
 import os
-import datetime
 
 env = os.environ.copy()
 timeout = 120
 
 
-def protect(path) -> str:
+def protect(path) -> None:
     """
     Make the given `path` readonly.
     """
     cmd = ['chattr', '+i', path]
-    return subprocess.check_output(cmd, env=env, timeout=timeout).decode()
+    subprocess.call(cmd, env=env, timeout=timeout)
 
 
-def share(path) -> str:
+def share(path) -> None:
     """
     Make the given `path` readonly.
     """
     cmd = ['chattr', '-i', path]
-    return subprocess.check_output(cmd, env=env, timeout=timeout).decode()
-
-
+    subprocess.call(cmd, env=env, timeout=timeout)
 
 

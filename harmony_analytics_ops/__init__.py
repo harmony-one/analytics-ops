@@ -3,12 +3,12 @@ import warnings
 
 from .aws_util import (
     find_and_sort_all_logs,
-    copy_from_s3
+    copy_from_s3,
 )
 
 from .jupyter_util import (
     protect,
-    share
+    share,
 )
 
 if sys.version_info.major < 3:
